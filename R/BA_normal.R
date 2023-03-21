@@ -115,7 +115,7 @@ print(df)
   } else {
     
     
-    tryCatch({
+    #tryCatch({
     
     library(nlme)
     resa<-lme(diff~as.factor(fixed),random=~1|random,
@@ -191,7 +191,7 @@ print(df)
     print(summary)
     print(df)
     
-    }, error=function(e){cat("\n \n ERROR : Must SPECIFY: RANDOM' AND 'FIXED'")})
+    #}, error=function(e){cat("\n \n ERROR : Must SPECIFY: RANDOM' AND 'FIXED'")})
     
   }
 
