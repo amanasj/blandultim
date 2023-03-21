@@ -22,7 +22,7 @@ computes B-A statistics and produces B-A plots based on several possible conditi
    Non-normally distributed data benefits from a bootstrapping approach to estimate the 
    possible distribution of population means and hence 95% CI's in order to calculated CI's 
    for the bias and LoA. Must specify random, fixed and nboot (resampling rate for 
-   bootstrapping ~ 1000 is adequate)
+   bootstrapping ~ 1000 is usually adequate)
    
    CoR is calculated from within patient stdev so doesn't use the bootstrapping aspect but 
    rather uses either the simply calculated within patient stdev in the non-repeated measures 
@@ -36,6 +36,9 @@ computes B-A statistics and produces B-A plots based on several possible conditi
          
  4) Finally produce B-A plot using function:   BA_plot(data, x, y, title)
 
+
+\n
+\n
 
 To install R package:  
 library(devtools)  
