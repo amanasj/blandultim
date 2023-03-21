@@ -115,18 +115,16 @@ print(df)
   } else {
     
     
-    #tryCatch({
-    
-    library(nlme)
-    resa<-lme(diff~as.factor(fixed),random=~1|random,
-              correlation=corCompSymm(form=~1|random),data=df, na.action=na.omit)
-  
-    
-    
+    tryCatch({
+   
     # Individual sample calculations
     df$mean <- (x + y) / 2
     df$diff <- y - x
     
+        library(nlme)
+    resa<-lme(diff~as.factor(fixed),random=~1|random,
+              correlation=corCompSymm(form=~1|random),data=df, na.action=na.omit)  
+      
     # Whole sample calculations
     summary <- data.frame()
     means <- c(paste("mean of x"), paste("mean of y"))
@@ -191,7 +189,7 @@ print(df)
     print(summary)
     print(df)
     
-    #}, error=function(e){cat("\n \n ERROR : Must SPECIFY: RANDOM' AND 'FIXED'")})
+    }, error=function(e){cat("\n \n ERROR : Must SPECIFY: RANDOM' AND 'FIXED'")})
     
   }
 
