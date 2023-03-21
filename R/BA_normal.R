@@ -31,7 +31,7 @@
 ################# Stats function ################
 #################################################
 
-bland_altman_stats <- function(df, x, y, repeated, random, fixed, nboot) {
+bland_altman_stats <- function(df, x, y, repeated, random, fixed, nboot=NULL) {
   
   
   if(repeated==FALSE){ 
