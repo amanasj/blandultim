@@ -31,3 +31,9 @@ computes B-A statistics and produces B-A plots based on several possible conditi
 
       NOTE: repeated measures is on by default for bootstrapping method as I haven't gotten around to 
          writting a bootstrapping code for non-repeated measures (simple to do though) 
+
+
+To install R package:  
+library(devtools)  
+install_github('amanasj/blandultim')  
+library(blandultim)  blandultim(...)
