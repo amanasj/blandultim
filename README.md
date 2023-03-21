@@ -31,6 +31,10 @@ computes B-A statistics and produces B-A plots based on several possible conditi
 
       NOTE: repeated measures is on by default for bootstrapping method as I haven't gotten around to 
          writting a bootstrapping code for non-repeated measures (simple to do though) 
+         
+         
+         
+ 4) Finally produce B-A plot using function:   BA_plot(data, x, y, title)
 
 
 To install R package:  
