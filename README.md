@@ -36,4 +36,5 @@ computes B-A statistics and produces B-A plots based on several possible conditi
 To install R package:  
 library(devtools)  
 install_github('amanasj/blandultim')  
-library(blandultim)  blandultim(...)
+library(blandultim)  
+blandultim(data, x, y, ...)
