@@ -37,8 +37,8 @@ computes B-A statistics and produces B-A plots based on several possible conditi
  4) Finally produce B-A plot using function:   BA_plot(data, x, y, title)
 
 
-\n
-\n
+<br><br>
+
 
 To install R package:  
 library(devtools)  
