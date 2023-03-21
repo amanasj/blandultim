@@ -4,7 +4,7 @@ blandultim package:
 
 <br>
 
-computes B-A statistics and produces B-A plots based on several possible conditions
+computes Bland-Altman statistics and produces B-A plots based on several possible conditions
 
 <br>
 
