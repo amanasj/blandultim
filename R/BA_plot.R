@@ -9,8 +9,11 @@ BA_plot <- function(stats,
                     axis_xshift=5, 
                     axis_yshift=15, 
                     biasUCI_yshift=1, 
+                    biasUCI_xshift=-2,
                     CI_yshift=3, 
+                    CI_xshift=-2,
                     CoR_yshift=8, 
+                    CoR_xshift=-2,
                     digits=3,
                     pointsize=3.5,
                     axis_text_size=16,
@@ -85,16 +88,16 @@ if("stimulus_ID" %in% colnames(data)){
 baplot <- baplot + 
   ggplot2::coord_cartesian(xlim=c(-0.1, xmax + axis_xshift), ylim=c(lowerLOA_lowerCI - axis_yshift, upperLOA_upperCI + axis_yshift), expand = F)
 
-baplot <- baplot+annotate("text", x=xmax, y=biasUpperCI + biasUCI_yshift, 
+baplot <- baplot+annotate("text", x=xmax+(biasUCI_xshift), y=biasUpperCI + biasUCI_yshift, 
                           label= paste0("bias = ", bias, " (95% CI: ", biasLowerCI, "," , biasUpperCI,")"), 
                           size=bias_type_size, fontface = 2)
-baplot <- baplot+annotate("text", x=xmax, y=upperLOA_upperCI+CI_yshift, 
+baplot <- baplot+annotate("text", x=xmax+(CI_xshift), y=upperLOA_upperCI+CI_yshift, 
                           label= paste0("ULoA = ", uloa, " (95% CI: ", upperLOA_lowerCI, "," , upperLOA_upperCI,")"), 
                           size=LOA_type_size, fontface = 2)
-baplot <- baplot+annotate("text", x=xmax, y=lowerLOA_lowerCI - CI_yshift, 
+baplot <- baplot+annotate("text", x=xmax+(CI_xshift), y=lowerLOA_lowerCI - CI_yshift, 
                           label= paste0("LLoA = ", lloa, " (95% CI: ", lowerLOA_lowerCI, "," , lowerLOA_upperCI,")"), 
                           size=LOA_type_size, fontface = 2) 
-baplot <- baplot+annotate("text", x=xmax, y=upperLOA_upperCI + CoR_yshift, 
+baplot <- baplot+annotate("text", x=xmax+(CoR_xshift), y=upperLOA_upperCI + CoR_yshift, 
                           label= paste0("CoR = ", CoR), 
                           size=CoR_type_size, fontface = 2) 
 baplot <- baplot +
