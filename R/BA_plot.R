@@ -12,14 +12,15 @@ BA_plot <- function(stats,
                     CI_yshift=3, 
                     CoR_yshift=8, 
                     digits=3,
-                    pointsize=3,
-                    axis_text_size=20,
+                    pointsize=3.5,
+                    axis_text_size=16,
                     axis_title_size=24,
-                    plot_title_size=22,
+                    plot_title_size=24,
                     alpha=0.3,
                     bias_type_size = 6,
                     LOA_type_size = 6,
-                    CoR_type_size = 6)
+                    CoR_type_size = 6,
+                    legend_size=1.5)
 {
 
 library(tidyverse)
@@ -31,7 +32,8 @@ theme <- theme_bw()+theme(
   plot.title = element_text(size=plot_title_size, hjust=0.5,face="bold",
                             margin = margin(t = 0, b = 0)),
   panel.grid.major = element_blank(),
-  panel.grid.minor = element_blank())
+  panel.grid.minor = element_blank()) +
+  theme(legend.key.size = unit(legend_size, 'cm')
 
 
 
