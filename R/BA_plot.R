@@ -8,6 +8,8 @@ library(patchwork)
 BA_plot <- function(stats,
                     x,
                     y,
+                    x_label = "Average of test 2 & test 3",
+                    y_label = "Difference (test 2 - test 3)",
                     title=NULL,
                     pointcolour="black", 
                     axis_xshift=5, 
@@ -60,8 +62,8 @@ xmax <- max(x)
 if("stimulus_ID" %in% colnames(data)){
   baplot <- ggplot(data, aes(mean, diff)) +
     geom_point(aes(colour=patient_ID), size=pointsize)+
-    labs(x = "Average of test 2 & test 3", 
-         y = "Difference (test 2 - test 3)", 
+    labs(x = x_label, 
+         y = y_label, 
          title = title,
          color = "Patient ID")+
     theme
@@ -69,8 +71,8 @@ if("stimulus_ID" %in% colnames(data)){
 } else {
   baplot <- ggplot(data, aes(mean, diff)) +
     geom_point(colour=pointcolour, size=pointsize)+
-    labs(x = "Average of test 2 & test 3", 
-         y = "Difference (test 2 - test 3)", 
+    labs(x = x_label, 
+         y = y_label, 
          title = title)+
     theme
 }
