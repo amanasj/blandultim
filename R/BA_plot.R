@@ -11,9 +11,9 @@ BA_plot <- function(stats,x,y,title=NULL,pointcolour="black"){
   
   
 theme <- theme_bw()+theme(
-  axis.text=element_text(size=16), 
-  axis.title=element_text(size=16,face="bold"),
-  plot.title = element_text(size=18, hjust=0.5,face="bold",
+  axis.text=element_text(size=20), 
+  axis.title=element_text(size=20,face="bold"),
+  plot.title = element_text(size=20, hjust=0.5,face="bold",
                             margin = margin(t = 0, b = 0)),
   panel.grid.major = element_blank(),
   panel.grid.minor = element_blank())
@@ -43,7 +43,7 @@ xmax <- max(x)
 
 if("stimulus_ID" %in% colnames(data)){
   baplot <- ggplot(data, aes(mean, diff)) +
-    geom_point(aes(colour=patient_ID))+
+    geom_point(aes(colour=patient_ID), size=3)+
     labs(x = "Average of test 2 & test 3", 
          y = "Difference (test 2 - test 3)", 
          title = title,
@@ -52,7 +52,7 @@ if("stimulus_ID" %in% colnames(data)){
   
 } else {
   baplot <- ggplot(data, aes(mean, diff)) +
-    geom_point(colour=pointcolour)+
+    geom_point(colour=pointcolour, size=3)+
     labs(x = "Average of test 2 & test 3", 
          y = "Difference (test 2 - test 3)", 
          title = title)+
@@ -68,16 +68,16 @@ baplot <- baplot +
 
 baplot <- baplot+annotate("text", x=xmax, y=biasUpperCI+1, 
                           label= paste0("bias = ", bias, " (95% CI: ", biasLowerCI, "," , biasUpperCI,")"), 
-                          size=3.5, fontface = 2)
+                          size=4, fontface = 2)
 baplot <- baplot+annotate("text", x=xmax, y=upperLOA_upperCI+3, 
                           label= paste0("ULoA = ", uloa, " (95% CI: ", upperLOA_lowerCI, "," , upperLOA_upperCI,")"), 
-                          size=5, fontface = 2)
+                          size=6, fontface = 2)
 baplot <- baplot+annotate("text", x=xmax, y=lowerLOA_lowerCI-3, 
                           label= paste0("LLoA = ", lloa, " (95% CI: ", lowerLOA_lowerCI, "," , lowerLOA_upperCI,")"), 
-                          size=5, fontface = 2) 
+                          size=6, fontface = 2) 
 baplot <- baplot+annotate("text", x=xmax, y=upperLOA_upperCI+8, 
                           label= paste0("CoR = ", CoR), 
-                          size=4, fontface = 2) 
+                          size=6, fontface = 2) 
 baplot <- baplot +
   geom_hline(yintercept = bias , linetype = 2) + # Bias
   geom_hline(yintercept = biasUpperCI, linetype = 2) + # Bias - upper confidence interval
