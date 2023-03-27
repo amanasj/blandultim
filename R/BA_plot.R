@@ -1,9 +1,3 @@
-library(tidyverse)
-library(here)
-library(patchwork)
-
-
-
 
 BA_plot <- function(stats,
                     x,
@@ -25,7 +19,7 @@ BA_plot <- function(stats,
                     alpha=0.3)
 {
 
-
+library(tidyverse)
   
   
 theme <- theme_bw()+theme(
