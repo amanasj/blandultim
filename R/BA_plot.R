@@ -5,7 +5,19 @@ library(patchwork)
 
 
 
-BA_plot <- function(stats,x,y,title=NULL,pointcolour="black"){
+BA_plot <- function(stats,
+                    x,
+                    y,
+                    title=NULL,
+                    pointcolour="black", 
+                    axis_xshift=5, 
+                    axis_yshift=15, 
+                    biasUCI_yshift=1, 
+                    CI_yshift=3, 
+                    CoR_yshift=8, 
+                    digits=3,
+                    pointsize=3)
+{
 
 
   
@@ -24,16 +36,16 @@ theme <- theme_bw()+theme(
 
 ###################### extract stats for plots ###########################
 data <- stats$df
-bias <- signif(stats$summary$bias, digits = 3)
-biasLowerCI <- signif(stats$summary$bias_lowerCI, digits = 3)
-biasUpperCI <- signif(stats$summary$bias_upperCI, digits = 3)
-lloa <- signif(stats$summary$lower_LoA, digits = 3)
-uloa <- signif(stats$summary$upper_LoA, digits = 3)
-upperLOA_upperCI <- signif(stats$summary$upperLOA_upperCI, digits = 3)
-upperLOA_lowerCI <- signif(stats$summary$upperLOA_lowerCI, digits = 3)
-lowerLOA_upperCI <- signif(stats$summary$lowerLOA_upperCI, digits = 3)
-lowerLOA_lowerCI <- signif(stats$summary$lowerLOA_lowerCI, digits = 3)
-CoR <- signif(stats$summary$Coefficient_of_Repeatability, digits = 3)
+bias <- signif(stats$summary$bias, digits = digits)
+biasLowerCI <- signif(stats$summary$bias_lowerCI, digits = digits)
+biasUpperCI <- signif(stats$summary$bias_upperCI, digits = digits)
+lloa <- signif(stats$summary$lower_LoA, digits = digits)
+uloa <- signif(stats$summary$upper_LoA, digits = digits)
+upperLOA_upperCI <- signif(stats$summary$upperLOA_upperCI, digits = digits)
+upperLOA_lowerCI <- signif(stats$summary$upperLOA_lowerCI, digits = digits)
+lowerLOA_upperCI <- signif(stats$summary$lowerLOA_upperCI, digits = digits)
+lowerLOA_lowerCI <- signif(stats$summary$lowerLOA_lowerCI, digits = digits)
+CoR <- signif(stats$summary$Coefficient_of_Repeatability, digits = digits)
 xmax <- max(x)
 
 
@@ -43,7 +55,7 @@ xmax <- max(x)
 
 if("stimulus_ID" %in% colnames(data)){
   baplot <- ggplot(data, aes(mean, diff)) +
-    geom_point(aes(colour=patient_ID), size=3)+
+    geom_point(aes(colour=patient_ID), size=pointsize)+
     labs(x = "Average of test 2 & test 3", 
          y = "Difference (test 2 - test 3)", 
          title = title,
@@ -52,7 +64,7 @@ if("stimulus_ID" %in% colnames(data)){
   
 } else {
   baplot <- ggplot(data, aes(mean, diff)) +
-    geom_point(colour=pointcolour, size=3)+
+    geom_point(colour=pointcolour, size=pointsize)+
     labs(x = "Average of test 2 & test 3", 
          y = "Difference (test 2 - test 3)", 
          title = title)+
@@ -64,18 +76,18 @@ if("stimulus_ID" %in% colnames(data)){
 
 ####change axis limits
 baplot <- baplot + 
-  ggplot2::coord_cartesian(xlim=c(-0.1,xmax+5), ylim=c(lowerLOA_lowerCI-15,upperLOA_upperCI+15), expand = F)
+  ggplot2::coord_cartesian(xlim=c(-0.1,xmax+axis_xshift), ylim=c(lowerLOA_lowerCI-yshift,upperLOA_upperCI+axis_yshift), expand = F)
 
-baplot <- baplot+annotate("text", x=xmax, y=biasUpperCI+1, 
+baplot <- baplot+annotate("text", x=xmax, y=biasUpperCI+biasUCI_yshift, 
                           label= paste0("bias = ", bias, " (95% CI: ", biasLowerCI, "," , biasUpperCI,")"), 
                           size=4, fontface = 2)
-baplot <- baplot+annotate("text", x=xmax, y=upperLOA_upperCI+3, 
+baplot <- baplot+annotate("text", x=xmax, y=upperLOA_upperCI+CI_yshift, 
                           label= paste0("ULoA = ", uloa, " (95% CI: ", upperLOA_lowerCI, "," , upperLOA_upperCI,")"), 
                           size=6, fontface = 2)
-baplot <- baplot+annotate("text", x=xmax, y=lowerLOA_lowerCI-3, 
+baplot <- baplot+annotate("text", x=xmax, y=lowerLOA_lowerCI-CI_yshift, 
                           label= paste0("LLoA = ", lloa, " (95% CI: ", lowerLOA_lowerCI, "," , lowerLOA_upperCI,")"), 
                           size=6, fontface = 2) 
-baplot <- baplot+annotate("text", x=xmax, y=upperLOA_upperCI+8, 
+baplot <- baplot+annotate("text", x=xmax, y=upperLOA_upperCI+CoR_yshift, 
                           label= paste0("CoR = ", CoR), 
                           size=6, fontface = 2) 
 baplot <- baplot +
