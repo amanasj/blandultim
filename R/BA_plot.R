@@ -17,9 +17,9 @@ BA_plot <- function(stats,
                     axis_title_size=24,
                     plot_title_size=22,
                     alpha=0.3,
-                    bias_type_size = 8,
-                    LOA_type_size = 8,
-                    CoR_type_size = 8)
+                    bias_type_size = 6,
+                    LOA_type_size = 6,
+                    CoR_type_size = 6)
 {
 
 library(tidyverse)
