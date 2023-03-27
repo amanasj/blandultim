@@ -16,7 +16,10 @@ BA_plot <- function(stats,
                     axis_text_size=20,
                     axis_title_size=20,
                     plot_title_size=20,
-                    alpha=0.3)
+                    alpha=0.3,
+                    bias_type_size = 6,
+                    LOA_type_size = 8,
+                    CoR_type_size = 7)
 {
 
 library(tidyverse)
@@ -80,16 +83,16 @@ baplot <- baplot +
 
 baplot <- baplot+annotate("text", x=xmax, y=biasUpperCI + biasUCI_yshift, 
                           label= paste0("bias = ", bias, " (95% CI: ", biasLowerCI, "," , biasUpperCI,")"), 
-                          size=6, fontface = 2)
+                          size=bias_type_size, fontface = 2)
 baplot <- baplot+annotate("text", x=xmax, y=upperLOA_upperCI+CI_yshift, 
                           label= paste0("ULoA = ", uloa, " (95% CI: ", upperLOA_lowerCI, "," , upperLOA_upperCI,")"), 
-                          size=7, fontface = 2)
+                          size=LOA_type_size, fontface = 2)
 baplot <- baplot+annotate("text", x=xmax, y=lowerLOA_lowerCI - CI_yshift, 
                           label= paste0("LLoA = ", lloa, " (95% CI: ", lowerLOA_lowerCI, "," , lowerLOA_upperCI,")"), 
-                          size=7, fontface = 2) 
+                          size=LOA_type_size, fontface = 2) 
 baplot <- baplot+annotate("text", x=xmax, y=upperLOA_upperCI + CoR_yshift, 
                           label= paste0("CoR = ", CoR), 
-                          size=7, fontface = 2) 
+                          size=CoR_type_size, fontface = 2) 
 baplot <- baplot +
   geom_hline(yintercept = bias , linetype = 2) + # Bias
   geom_hline(yintercept = biasUpperCI, linetype = 2) + # Bias - upper confidence interval
