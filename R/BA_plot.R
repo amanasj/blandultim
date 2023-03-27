@@ -76,7 +76,7 @@ if("stimulus_ID" %in% colnames(data)){
 
 ####change axis limits
 baplot <- baplot + 
-  ggplot2::coord_cartesian(xlim=c(-0.1,xmax+axis_xshift), ylim=c(lowerLOA_lowerCI-yshift,upperLOA_upperCI+axis_yshift), expand = F)
+  ggplot2::coord_cartesian(xlim=c(-0.1,xmax+axis_xshift), ylim=c(lowerLOA_lowerCI-axis_yshift,upperLOA_upperCI+axis_yshift), expand = F)
 
 baplot <- baplot+annotate("text", x=xmax, y=biasUpperCI+biasUCI_yshift, 
                           label= paste0("bias = ", bias, " (95% CI: ", biasLowerCI, "," , biasUpperCI,")"), 
