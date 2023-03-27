@@ -18,7 +18,7 @@ BA_plot <- function(stats,
                     plot_title_size=24,
                     alpha=0.3,
                     bias_type_size = 6,
-                    LOA_type_size = 6,
+                    LoA_type_size = 6,
                     CoR_type_size = 6,
                     legend_size=1.5)
 {
@@ -32,8 +32,10 @@ theme <- theme_bw()+theme(
   plot.title = element_text(size=plot_title_size, hjust=0.5,face="bold",
                             margin = margin(t = 0, b = 0)),
   panel.grid.major = element_blank(),
-  panel.grid.minor = element_blank()) +
-  theme(legend.key.size = unit(legend_size, 'cm')
+  panel.grid.minor = element_blank(),
+  legend.key.size = unit(legend_size, 'cm')
+) 
+
 
 
 
