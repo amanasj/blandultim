@@ -43,7 +43,6 @@ blandultim <- function(data, x, y, nboot=NULL, fixed=NULL, random=NULL, bootstra
   stats
   
     
-  saveRDS(blandultim, file = "blandultimresults.RDS") 
     
   }
 
