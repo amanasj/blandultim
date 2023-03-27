@@ -80,16 +80,16 @@ baplot <- baplot +
 
 baplot <- baplot+annotate("text", x=xmax, y=biasUpperCI + biasUCI_yshift, 
                           label= paste0("bias = ", bias, " (95% CI: ", biasLowerCI, "," , biasUpperCI,")"), 
-                          size=4, fontface = 2)
+                          size=6, fontface = 2)
 baplot <- baplot+annotate("text", x=xmax, y=upperLOA_upperCI+CI_yshift, 
                           label= paste0("ULoA = ", uloa, " (95% CI: ", upperLOA_lowerCI, "," , upperLOA_upperCI,")"), 
-                          size=6, fontface = 2)
+                          size=7, fontface = 2)
 baplot <- baplot+annotate("text", x=xmax, y=lowerLOA_lowerCI - CI_yshift, 
                           label= paste0("LLoA = ", lloa, " (95% CI: ", lowerLOA_lowerCI, "," , lowerLOA_upperCI,")"), 
-                          size=6, fontface = 2) 
+                          size=7, fontface = 2) 
 baplot <- baplot+annotate("text", x=xmax, y=upperLOA_upperCI + CoR_yshift, 
                           label= paste0("CoR = ", CoR), 
-                          size=6, fontface = 2) 
+                          size=7, fontface = 2) 
 baplot <- baplot +
   geom_hline(yintercept = bias , linetype = 2) + # Bias
   geom_hline(yintercept = biasUpperCI, linetype = 2) + # Bias - upper confidence interval
