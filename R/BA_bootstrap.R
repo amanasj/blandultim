@@ -117,7 +117,7 @@ parabootstraptLOA <- function(nboot,data,x,y,seed=10,fixed,random){
   
   
   cat("\n \n WARNING:- Bootstrapping can take a long time depending on how super-duper your computer is
-                        and how many resamples (nboot) you have chosen... please be patient. \n \n")
+                       and how many resamples (nboot) you have chosen (>20 minutes on my laptop with nboot=1000)... please be patient. \n . \n . \n . ")
   
   
   set.seed(seed)
