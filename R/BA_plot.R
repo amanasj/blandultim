@@ -23,7 +23,7 @@ BA_plot <- function(stats,
                     bias_type_size = 6,
                     LoA_type_size = 6,
                     CoR_type_size = 6,
-                    legend_size=1.1)
+                    legend_size=0.9)
 {
 
 library(tidyverse)
