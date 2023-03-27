@@ -76,18 +76,18 @@ if("stimulus_ID" %in% colnames(data)){
 
 ####change axis limits
 baplot <- baplot + 
-  ggplot2::coord_cartesian(xlim=c(-0.1,xmax+axis_xshift), ylim=c(lowerLOA_lowerCI-axis_yshift,upperLOA_upperCI+axis_yshift), expand = F)
+  ggplot2::coord_cartesian(xlim=c(-0.1, xmax + axis_xshift), ylim=c(lowerLOA_lowerCI - axis_yshift, upperLOA_upperCI + axis_yshift), expand = F)
 
-baplot <- baplot+annotate("text", x=xmax, y=biasUpperCI+biasUCI_yshift, 
+baplot <- baplot+annotate("text", x=xmax, y=biasUpperCI + biasUCI_yshift, 
                           label= paste0("bias = ", bias, " (95% CI: ", biasLowerCI, "," , biasUpperCI,")"), 
                           size=4, fontface = 2)
 baplot <- baplot+annotate("text", x=xmax, y=upperLOA_upperCI+CI_yshift, 
                           label= paste0("ULoA = ", uloa, " (95% CI: ", upperLOA_lowerCI, "," , upperLOA_upperCI,")"), 
                           size=6, fontface = 2)
-baplot <- baplot+annotate("text", x=xmax, y=lowerLOA_lowerCI-CI_yshift, 
+baplot <- baplot+annotate("text", x=xmax, y=lowerLOA_lowerCI - CI_yshift, 
                           label= paste0("LLoA = ", lloa, " (95% CI: ", lowerLOA_lowerCI, "," , lowerLOA_upperCI,")"), 
                           size=6, fontface = 2) 
-baplot <- baplot+annotate("text", x=xmax, y=upperLOA_upperCI+CoR_yshift, 
+baplot <- baplot+annotate("text", x=xmax, y=upperLOA_upperCI + CoR_yshift, 
                           label= paste0("CoR = ", CoR), 
                           size=6, fontface = 2) 
 baplot <- baplot +
