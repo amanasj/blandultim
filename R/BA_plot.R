@@ -16,16 +16,20 @@ BA_plot <- function(stats,
                     CI_yshift=3, 
                     CoR_yshift=8, 
                     digits=3,
-                    pointsize=3)
+                    pointsize=3,
+                    axis_text_size=20,
+                    axis_title_size=20,
+                    plot_title_size=20,
+                    alpha=0.3)
 {
 
 
   
   
 theme <- theme_bw()+theme(
-  axis.text=element_text(size=20), 
-  axis.title=element_text(size=20,face="bold"),
-  plot.title = element_text(size=20, hjust=0.5,face="bold",
+  axis.text=element_text(size=axis_text_size), 
+  axis.title=element_text(size=axis_title_size,face="bold"),
+  plot.title = element_text(size=plot_title_size, hjust=0.5,face="bold",
                             margin = margin(t = 0, b = 0)),
   panel.grid.major = element_blank(),
   panel.grid.minor = element_blank())
@@ -100,9 +104,9 @@ baplot <- baplot +
   geom_hline(yintercept = upperLOA_lowerCI, linetype = 3 ) + # Upper limit of agreement - lower confidence interval
   geom_hline(yintercept = lowerLOA_upperCI, linetype = 3 ) + # Lower limit of agreement - upper confidence interval
   geom_hline(yintercept = lowerLOA_lowerCI, linetype = 3 ) + # Lower limit of agreement - lower confidence interval
-  annotate( "rect", xmin = -Inf , xmax = Inf , ymin = biasLowerCI , ymax = biasUpperCI , fill="blue" , alpha=0.3 ) + # Bias confidence interval shading
-  annotate( "rect", xmin = -Inf , xmax = Inf , ymin = upperLOA_lowerCI , ymax = upperLOA_upperCI , fill="green" , alpha=0.3 ) + # Upper limits of agreement confidence interval shading
-  annotate( "rect", xmin = -Inf , xmax = Inf , ymin = lowerLOA_lowerCI , ymax = lowerLOA_upperCI , fill="red" , alpha=0.3 ) # Lower limits of agreement confidence interval shading
+  annotate( "rect", xmin = -Inf , xmax = Inf , ymin = biasLowerCI , ymax = biasUpperCI , fill="blue" , alpha=alpha ) + # Bias confidence interval shading
+  annotate( "rect", xmin = -Inf , xmax = Inf , ymin = upperLOA_lowerCI , ymax = upperLOA_upperCI , fill="green" , alpha=alpha ) + # Upper limits of agreement confidence interval shading
+  annotate( "rect", xmin = -Inf , xmax = Inf , ymin = lowerLOA_lowerCI , ymax = lowerLOA_upperCI , fill="red" , alpha=alpha ) # Lower limits of agreement confidence interval shading
 
 baplot
 
