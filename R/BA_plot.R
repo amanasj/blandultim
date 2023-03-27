@@ -14,12 +14,12 @@ BA_plot <- function(stats,
                     digits=3,
                     pointsize=3,
                     axis_text_size=20,
-                    axis_title_size=20,
-                    plot_title_size=20,
+                    axis_title_size=22,
+                    plot_title_size=22,
                     alpha=0.3,
-                    bias_type_size = 6,
-                    LOA_type_size = 8,
-                    CoR_type_size = 7)
+                    bias_type_size = 8,
+                    LOA_type_size = 9,
+                    CoR_type_size = 8)
 {
 
 library(tidyverse)
