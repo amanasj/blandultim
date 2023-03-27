@@ -6,7 +6,7 @@
 
   
 
-blandultim <<- function(data, x, y, nboot=NULL, fixed=NULL, random=NULL, bootstrap=NULL, repeated=NULL){
+blandultim <- function(data, x, y, nboot=NULL, fixed=NULL, random=NULL, bootstrap=NULL, repeated=NULL){
 
       
   
@@ -42,6 +42,9 @@ blandultim <<- function(data, x, y, nboot=NULL, fixed=NULL, random=NULL, bootstr
   
   stats
   
+    
+  saveRDS(blandultim, file = "blandultimresults.RDS") 
+    
   }
 
 }
