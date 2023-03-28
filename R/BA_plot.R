@@ -106,7 +106,7 @@ BA_plot <- function(stats,
                             label= paste0("LLoA = ", lloa, " (95% CI: ", lowerLOA_lowerCI, "," , lowerLOA_upperCI,")"), 
                             size=LoA_type_size, fontface = 2) 
   baplot <- baplot+annotate("text", x=xmax+(CoRlabel_xshift), y=upperLOA_upperCI+(CoRlabel_yshift), 
-                            label= paste0("CoR = ", CoR), 
+                            label= paste0("CoR = ", CoR,"dB"), 
                             size=CoR_type_size, fontface = 2) 
   baplot <- baplot +
     geom_hline(yintercept = bias , linetype = 2) + # Bias
