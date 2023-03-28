@@ -29,6 +29,7 @@ BA_plot <- function(stats,
 {
   
   library(tidyverse)
+  library(viridis)
   
   
   theme <- theme_bw()+theme(
