@@ -16,12 +16,12 @@ BA_plot <- function(stats,
                     digits=1,
                     pointsize=3.5,
                     axis_text_size=18,
-                    axis_title_size=26,
+                    axis_title_size=24,
                     plot_title_size=26,
                     alpha=0.3,
                     bias_type_size = 5,
                     LoA_type_size = 6,
-                    CoR_type_size = 7,
+                    CoR_type_size = 6,
                     legend_size=0.8,
                     legend_title_size=14,
                     legend_text_size=10,
@@ -140,9 +140,6 @@ BA_plot <- function(stats,
   
   
 }
-
-
-
 
 
 
