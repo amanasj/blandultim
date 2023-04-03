@@ -82,7 +82,7 @@ BA_plot <- function(stats,
     
     }else{
             baplot <- ggplot(data, aes(mean, diff)) +
-            geom_point(colour=pointcolour, size=pointsize)} +
+            geom_point(colour=pointcolour, size=pointsize) +
             scale_color_viridis(discrete = T, option = "turbo") +
             labs(x = x_label, y = y_label, title = title, color = "Patient ID") +
             theme
