@@ -65,10 +65,9 @@ BA_plot <- function(stats,
   lowerLOA_upperCI <- round(stats$summary$lowerLOA_upperCI, digits = digits)
   lowerLOA_lowerCI <- round(stats$summary$lowerLOA_lowerCI, digits = digits)
   CoR <- round(stats$summary$Coefficient_of_Repeatability, digits = digits)
-  xmax <- max(abs(x))
-  ymax <- max(y)
-  ymin <- min(y)
-  y_abs <- max(abs(y))
+  mean_max <- max(abs(mean))
+  diff_max <- max(abs(diff))
+
   
   
   
