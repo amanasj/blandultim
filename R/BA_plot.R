@@ -109,7 +109,7 @@ BA_plot <- function(stats,
   baplot <- baplot + 
     ggplot2::coord_cartesian(xlim=c(xmin, xmax + (axis_xshift*xmax)), ylim=c(-y_abs - (axis_yshift*y_abs), y_abs + (axis_yshift*y_abs)), expand = F)
   
-  baplot <- baplot+annotate("text", x=xmax+(biaslabel_xshift*xmax), y=biasUpperCI+(biaslabel_yshift*y_abs), 
+  baplot <- baplot+annotate("text", x=xmin+(biaslabel_xshift*xmax), y=biasUpperCI+(biaslabel_yshift*y_abs), 
                             label= paste0("bias = ", bias, " (95% CI: ", biasLowerCI, "," , biasUpperCI,")"), 
                             size=bias_type_size, fontface = 2)
   baplot <- baplot+annotate("text", x=xmax+(CIlabel_xshift*xmax), y=upperLOA_upperCI+(CIlabel_yshift*y_abs), 
