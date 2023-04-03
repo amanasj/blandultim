@@ -25,7 +25,7 @@ BA_plot <- function(stats,
                     legend_size=0.8,
                     legend_title_size=14,
                     legend_text_size=10,
-                    show_patient_ID_cols = TRUE)
+                    show_patient_ID_cols=TRUE)
 
 {
   
