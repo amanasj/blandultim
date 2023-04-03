@@ -5,14 +5,14 @@ BA_plot <- function(stats,
                     y_label = "Difference (test 2 - test 3)",
                     title=NULL,
                     pointcolour="black", 
-                    axis_xshift=5, 
-                    axis_yshift=15, 
-                    biaslabel_yshift=1, 
-                    biaslabel_xshift=-2,
-                    CIlabel_yshift=2, 
-                    CIlabel_xshift=-2,
-                    CoRlabel_yshift=8, 
-                    CoRlabel_xshift=-2,
+                    axis_xshift=0.1, 
+                    axis_yshift=0.1, 
+                    biaslabel_yshift=0.1, 
+                    biaslabel_xshift=-0.1,
+                    CIlabel_yshift=0.1, 
+                    CIlabel_xshift=-0.1,
+                    CoRlabel_yshift=0.1, 
+                    CoRlabel_xshift=-0.1,
                     digits=1,
                     pointsize=3.5,
                     axis_text_size=16,
@@ -25,7 +25,8 @@ BA_plot <- function(stats,
                     legend_size=0.8,
                     legend_title_size=14,
                     legend_text_size=10,
-                    show_patient_ID_cols=TRUE)
+                    show_patient_ID_cols=TRUE,
+                    xmin=-0.1)
 
 {
   
@@ -64,7 +65,9 @@ BA_plot <- function(stats,
   lowerLOA_upperCI <- round(stats$summary$lowerLOA_upperCI, digits = digits)
   lowerLOA_lowerCI <- round(stats$summary$lowerLOA_lowerCI, digits = digits)
   CoR <- round(stats$summary$Coefficient_of_Repeatability, digits = digits)
-  xmax <- max(x)
+  xmax <- max(abs(x))
+  ymax <- max(y)
+  ymin <- min(y)
   
   
   
@@ -103,18 +106,18 @@ BA_plot <- function(stats,
   
   ####change axis limits
   baplot <- baplot + 
-    ggplot2::coord_cartesian(xlim=c(-0.1, xmax + axis_xshift), ylim=c(lowerLOA_lowerCI - axis_yshift, upperLOA_upperCI + axis_yshift), expand = F)
+    ggplot2::coord_cartesian(xlim=c(xmin, xmax + (axis_xshift*xmax)), ylim=c(ymin - (axis_yshift*ymin), ymax + (axis_yshift*ymax)), expand = F)
   
-  baplot <- baplot+annotate("text", x=xmax+(biaslabel_xshift), y=biasUpperCI+(biaslabel_yshift), 
+  baplot <- baplot+annotate("text", x=xmax+(biaslabel_xshift*xmax), y=biasUpperCI+(biaslabel_yshift*biasUpperCI), 
                             label= paste0("bias = ", bias, " (95% CI: ", biasLowerCI, "," , biasUpperCI,")"), 
                             size=bias_type_size, fontface = 2)
-  baplot <- baplot+annotate("text", x=xmax+(CIlabel_xshift), y=upperLOA_upperCI+(CIlabel_yshift), 
+  baplot <- baplot+annotate("text", x=xmax+(CIlabel_xshift*xmax), y=upperLOA_upperCI+(CIlabel_yshift*upperLOA_upperCI), 
                             label= paste0("ULoA = ", uloa, " (95% CI: ", upperLOA_lowerCI, "," , upperLOA_upperCI,")"), 
                             size=LoA_type_size, fontface = 2)
-  baplot <- baplot+annotate("text", x=xmax+(CIlabel_xshift), y=lowerLOA_lowerCI-(CIlabel_yshift), 
+  baplot <- baplot+annotate("text", x=xmax+(CIlabel_xshift*xmax), y=lowerLOA_lowerCI-(CIlabel_yshift*lowerLOA_lowerCI), 
                             label= paste0("LLoA = ", lloa, " (95% CI: ", lowerLOA_lowerCI, "," , lowerLOA_upperCI,")"), 
                             size=LoA_type_size, fontface = 2) 
-  baplot <- baplot+annotate("text", x=xmax+(CoRlabel_xshift), y=upperLOA_upperCI+(CoRlabel_yshift), 
+  baplot <- baplot+annotate("text", x=xmax+(CoRlabel_xshift*xmax), y=upperLOA_upperCI+(CoRlabel_yshift*upperLOA_upperCI), 
                             label= paste0("CoR = ", CoR,"dB"), 
                             size=CoR_type_size, fontface = 2) 
   baplot <- baplot +
