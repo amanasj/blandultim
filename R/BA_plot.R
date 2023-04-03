@@ -24,7 +24,8 @@ BA_plot <- function(stats,
                     CoR_type_size = 6,
                     legend_size=0.8,
                     legend_title_size=14,
-                    legend_text_size=10)
+                    legend_text_size=10,
+                    show_patient_ID_cols = TRUE)
 
 {
   
@@ -72,7 +73,9 @@ BA_plot <- function(stats,
   
   if("stimulus_ID" %in% colnames(data)){
     baplot <- ggplot(data, aes(mean, diff)) +
-      geom_point(aes(colour=patient_ID), size=pointsize) +
+    if(show_patient_ID_cols == TRUE){
+        geom_point(aes(colour=patient_ID), size=pointsize) }else{
+        geom_point(colour=pointcolour, size=pointsize)} +
       scale_color_viridis(discrete = T, option = "turbo") +
       labs(x = x_label, 
            y = y_label, 
