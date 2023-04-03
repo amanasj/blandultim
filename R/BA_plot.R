@@ -73,7 +73,7 @@ BA_plot <- function(stats,
   
   if("stimulus_ID" %in% colnames(data)){
     baplot <- ggplot(data, aes(mean, diff)) +
-    if(show_patient_ID_cols == TRUE){
+    if(show_patient_ID_cols = TRUE){
         geom_point(aes(colour=patient_ID), size=pointsize) }else{
         geom_point(colour=pointcolour, size=pointsize)} +
       scale_color_viridis(discrete = T, option = "turbo") +
