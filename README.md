@@ -1,4 +1,4 @@
-# blandultim
+# blandultim package
 
 blandultim package: 
 
