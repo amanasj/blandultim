@@ -72,16 +72,22 @@ BA_plot <- function(stats,
   
   
   if("stimulus_ID" %in% colnames(data)){
-    baplot <- ggplot(data, aes(mean, diff)) +
-    if(show_patient_ID_cols = TRUE){
-        geom_point(aes(colour=patient_ID), size=pointsize) }else{
-        geom_point(colour=pointcolour, size=pointsize)} +
-      scale_color_viridis(discrete = T, option = "turbo") +
-      labs(x = x_label, 
-           y = y_label, 
-           title = title,
-           color = "Patient ID") +
-      theme
+
+         if(show_patient_ID_cols = TRUE){
+            baplot <- ggplot(data, aes(mean, diff)) +
+            geom_point(aes(colour=patient_ID), size=pointsize) 
+            scale_color_viridis(discrete = T, option = "turbo") +
+            labs(x = x_label, y = y_label, title = title, color = "Patient ID") +
+            theme
+    
+    }else{
+            baplot <- ggplot(data, aes(mean, diff)) +
+            geom_point(colour=pointcolour, size=pointsize)} +
+            scale_color_viridis(discrete = T, option = "turbo") +
+            labs(x = x_label, y = y_label, title = title, color = "Patient ID") +
+            theme
+    }
+    
     
   } else {
     baplot <- ggplot(data, aes(mean, diff)) +
