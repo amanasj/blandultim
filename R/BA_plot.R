@@ -113,13 +113,13 @@ BA_plot <- function(stats,
   baplot <- baplot+annotate("text", x=xaxis_min+(biaslabel_xshift*mean_max), y=biasUpperCI+(biaslabel_yshift*diff_max), 
                             label= paste0("bias = ", bias, " (95% CI: ", biasLowerCI, "," , biasUpperCI,")"), 
                             size=bias_type_size, fontface = 2)
-  baplot <- baplot+annotate("text", x=xaxis_max+(CIlabel_xshift*xaxis_max), y=upperLOA_upperCI+(CIlabel_yshift*diff_max), 
+  baplot <- baplot+annotate("text", x=mean_max+(CIlabel_xshift*mean_max), y=upperLOA_upperCI+(CIlabel_yshift*diff_max), 
                             label= paste0("ULoA = ", uloa, " (95% CI: ", upperLOA_lowerCI, "," , upperLOA_upperCI,")"), 
                             size=LoA_type_size, fontface = 2)
-  baplot <- baplot+annotate("text", x=xaxis_max+(CIlabel_xshift*xaxis_max), y=lowerLOA_lowerCI-(CIlabel_yshift*diff_max), 
+  baplot <- baplot+annotate("text", x=mean_max+(CIlabel_xshift*mean_max), y=lowerLOA_lowerCI-(CIlabel_yshift*diff_max), 
                             label= paste0("LLoA = ", lloa, " (95% CI: ", lowerLOA_lowerCI, "," , lowerLOA_upperCI,")"), 
                             size=LoA_type_size, fontface = 2) 
-  baplot <- baplot+annotate("text", x=xaxis_max+(CoRlabel_xshift*xaxis_max), y=biasUpperCI+(CoRlabel_yshift*diff_max), 
+  baplot <- baplot+annotate("text", x=mean_max+(CoRlabel_xshift*mean_max), y=biasUpperCI+(CoRlabel_yshift*diff_max), 
                             label= paste0("CoR = ", CoR,"dB"), 
                             size=CoR_type_size, fontface = 2) 
   baplot <- baplot +
