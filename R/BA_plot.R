@@ -44,8 +44,8 @@ BA_plot <- function(stats,
     legend.key.size = unit(legend_size, 'cm'),
     legend.title = element_text(size=legend_title_size),
     legend.text = element_text(size=legend_text_size)
-    #panel.border = element_blank()
-    #axis.line = element_line()
+    panel.border = element_blank()
+    axis.line = element_line()
   ) 
   
   
