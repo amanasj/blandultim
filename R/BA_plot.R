@@ -7,15 +7,15 @@ BA_plot <- function(stats,
                     pointcolour="black", 
                     axis_xshift=0.1, 
                     axis_yshift=0.1, 
-                    biaslabel_yshift=0.1, 
-                    biaslabel_xshift=-0.1,
+                    biaslabel_yshift=0.05, 
+                    biaslabel_xshift=-0.05,
                     CIlabel_yshift=0.1, 
                     CIlabel_xshift=-0.1,
-                    CoRlabel_yshift=0.1, 
+                    CoRlabel_yshift=0.9, 
                     CoRlabel_xshift=-0.1,
                     digits=1,
                     pointsize=3.5,
-                    axis_text_size=16,
+                    axis_text_size=18,
                     axis_title_size=24,
                     plot_title_size=26,
                     alpha=0.3,
@@ -68,6 +68,7 @@ BA_plot <- function(stats,
   xmax <- max(abs(x))
   ymax <- max(y)
   ymin <- min(y)
+  y_abs <- max(abs(y))
   
   
   
@@ -75,20 +76,20 @@ BA_plot <- function(stats,
   
   
   if("stimulus_ID" %in% colnames(data)){
-
-         if(show_patient_ID_cols == TRUE){
-            baplot <- ggplot(data, aes(mean, diff)) +
-            geom_point(aes(colour=patient_ID), size=pointsize) +
-            scale_color_viridis(discrete = T, option = "turbo") +
-            labs(x = x_label, y = y_label, title = title, color = "Patient ID") +
-            theme
     
+    if(show_patient_ID_cols == TRUE){
+      baplot <- ggplot(data, aes(mean, diff)) +
+        geom_point(aes(colour=patient_ID), size=pointsize) +
+        scale_color_viridis(discrete = T, option = "turbo") +
+        labs(x = x_label, y = y_label, title = title, color = "Patient ID") +
+        theme
+      
     }else{
-            baplot <- ggplot(data, aes(mean, diff)) +
-            geom_point(colour=pointcolour, size=pointsize) +
-            scale_color_viridis(discrete = T, option = "turbo") +
-            labs(x = x_label, y = y_label, title = title, color = "Patient ID") +
-            theme
+      baplot <- ggplot(data, aes(mean, diff)) +
+        geom_point(colour=pointcolour, size=pointsize) +
+        scale_color_viridis(discrete = T, option = "turbo") +
+        labs(x = x_label, y = y_label, title = title, color = "Patient ID") +
+        theme
     }
     
     
@@ -106,18 +107,18 @@ BA_plot <- function(stats,
   
   ####change axis limits
   baplot <- baplot + 
-    ggplot2::coord_cartesian(xlim=c(xmin, xmax + (axis_xshift*xmax)), ylim=c(ymin - (axis_yshift*ymin), ymax + (axis_yshift*ymax)), expand = F)
+    ggplot2::coord_cartesian(xlim=c(xmin, xmax + (axis_xshift*xmax)), ylim=c(-y_abs - (axis_yshift*y_abs), y_abs + (axis_yshift*y_abs)), expand = F)
   
-  baplot <- baplot+annotate("text", x=xmax+(biaslabel_xshift*xmax), y=biasUpperCI+(biaslabel_yshift*biasUpperCI), 
+  baplot <- baplot+annotate("text", x=xmax+(biaslabel_xshift*xmax), y=biasUpperCI+(biaslabel_yshift*y_abs), 
                             label= paste0("bias = ", bias, " (95% CI: ", biasLowerCI, "," , biasUpperCI,")"), 
                             size=bias_type_size, fontface = 2)
-  baplot <- baplot+annotate("text", x=xmax+(CIlabel_xshift*xmax), y=upperLOA_upperCI+(CIlabel_yshift*upperLOA_upperCI), 
+  baplot <- baplot+annotate("text", x=xmax+(CIlabel_xshift*xmax), y=upperLOA_upperCI+(CIlabel_yshift*y_abs), 
                             label= paste0("ULoA = ", uloa, " (95% CI: ", upperLOA_lowerCI, "," , upperLOA_upperCI,")"), 
                             size=LoA_type_size, fontface = 2)
-  baplot <- baplot+annotate("text", x=xmax+(CIlabel_xshift*xmax), y=lowerLOA_lowerCI-(CIlabel_yshift*lowerLOA_lowerCI), 
+  baplot <- baplot+annotate("text", x=xmax+(CIlabel_xshift*xmax), y=lowerLOA_lowerCI-(CIlabel_yshift*y_abs), 
                             label= paste0("LLoA = ", lloa, " (95% CI: ", lowerLOA_lowerCI, "," , lowerLOA_upperCI,")"), 
                             size=LoA_type_size, fontface = 2) 
-  baplot <- baplot+annotate("text", x=xmax+(CoRlabel_xshift*xmax), y=upperLOA_upperCI+(CoRlabel_yshift*upperLOA_upperCI), 
+  baplot <- baplot+annotate("text", x=xmax+(CoRlabel_xshift*xmax), y=biasUpperCI+(CoRlabel_yshift*y_abs), 
                             label= paste0("CoR = ", CoR,"dB"), 
                             size=CoR_type_size, fontface = 2) 
   baplot <- baplot +
@@ -139,6 +140,7 @@ BA_plot <- function(stats,
   
   
 }
+
 
 
 
