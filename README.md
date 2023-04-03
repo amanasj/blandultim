@@ -37,8 +37,8 @@ computes Bland-Altman statistics and produces B-A plots based on several possibl
 
 <br>
 
-      NOTE: repeated measures is on by default for bootstrapping method as I haven't gotten around to 
-         writting a bootstrapping code for non-repeated measures (simple to do though) 
+      NOTE: repeated measures is on by default for bootstrapping method as I haven't yet gotten around to 
+         writing a bootstrapping code for non-repeated measures 
          
 <br>
          
