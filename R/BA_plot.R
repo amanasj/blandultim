@@ -1,13 +1,13 @@
 BA_plot <- function(stats,
                     x,
                     y,
-                    x_label = "Average of test 1 & test 2",
-                    y_label = "Difference (test 1 - test 2)",
+                    x_label = "Average of test 2 & test 3",
+                    y_label = "Difference (test 2 - test 3)",
                     title=NULL,
                     pointcolour="black", 
                     axis_xshift=0.1, 
                     axis_yshift=2, 
-                    biaslabel_yshift=0.1, 
+                    biaslabel_yshift=0.08, 
                     biaslabel_xshift=0.8,
                     CIlabel_yshift=0.15, 
                     CIlabel_xshift=0.8,
@@ -26,7 +26,10 @@ BA_plot <- function(stats,
                     legend_title_size=14,
                     legend_text_size=10,
                     show_patient_ID_cols=TRUE,
-                    xaxis_min=-0.1)
+                    xaxis_min=-0.1,
+                    xaxis_max=NULL,
+                    yaxis_min=NULL,
+                    yaxis_max=NULL)
 
 {
   
@@ -71,9 +74,15 @@ BA_plot <- function(stats,
   mean_max <- max(mean_max)
   diff_max <- max(c(upperLOA_upperCI, lowerLOA_lowerCI))
   
-  
-  
-  
+  if(is.null(xaxis_max)==T){
+  xaxis_max <- mean_max + (axis_xshift*mean_max)
+  }else{xaxis_max=xaxis_max}
+  if(is.null(yaxis_min)==T){
+    yaxis_min <- -diff_max - (axis_yshift*diff_max)
+  }else{yaxis_min=yaxis_min}
+  if(is.null(yaxis_max)==T){
+    yaxis_max <- diff_max + (axis_yshift*diff_max)
+  }else{yaxis_max=yaxis_max}
   
   
   
@@ -109,8 +118,7 @@ BA_plot <- function(stats,
   
   ####change axis limits
   baplot <- baplot + 
-    ggplot2::coord_cartesian(xlim=c(xaxis_min, mean_max + (axis_xshift*mean_max)), ylim=c(-diff_max - (axis_yshift*diff_max), diff_max + (axis_yshift*diff_max)), expand = F)
-  
+    ggplot2::coord_cartesian(xlim=c(xaxis_min, xaxis_max), ylim=c(yaxis_min, yaxis_max), expand = F)
   baplot <- baplot+annotate("text", x=xaxis_min+(biaslabel_xshift*mean_max), y=bias+(biaslabel_yshift*diff_max), 
                             label= paste0("bias = ", round(bias, digits = digits), " (95% CI: ", round(biasLowerCI, digits = digits), "," , round(biasUpperCI, digits = digits),")"), 
                             size=bias_type_size, fontface = 2)
