@@ -1,3 +1,4 @@
+
 BA_plot <- function(stats,
                     x,
                     y,
@@ -13,6 +14,7 @@ BA_plot <- function(stats,
                     CIlabel_xshift=0.8,
                     CoRlabel_yshift=1.3, 
                     CoRlabel_xshift=0.9,
+                    CoR_units="",
                     digits=1,
                     pointsize=3.5,
                     axis_text_size=18,
@@ -131,7 +133,7 @@ BA_plot <- function(stats,
                             label= paste0("LLoA = ", round(lloa, digits = digits), " (95% CI: ", round(lowerLOA_lowerCI, digits = digits), "," , round(lowerLOA_upperCI, digits = digits),")"), 
                             size=LoA_type_size, fontface = 2) 
   baplot <- baplot+annotate("text", x=xaxis_min+(CoRlabel_xshift*mean_max), y=diff_max+(CoRlabel_yshift*diff_max), 
-                            label= paste0("CoR = ", round(CoR, digits = digits),"dB", " (95% CI: ", round(COR_lowerCI, digits = digits), "," , round(COR_upperCI, digits = digits),")"), 
+                            label= paste0("CoR = ", round(CoR, digits = digits), CoR_units, " (95% CI: ", round(COR_lowerCI, digits = digits), "," , round(COR_upperCI, digits = digits),")"), 
                             size=CoR_type_size, fontface = 2) 
   baplot <- baplot +
     geom_hline(yintercept = bias , linetype = 2) + # Bias
