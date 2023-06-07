@@ -50,6 +50,6 @@ computes Bland-Altman statistics and produces B-A plots based on several possibl
 
 To install R package:  
 library(devtools)  
-install_github('amanasj/blandultim')  
+install_github('amanasj/blandultim', force=TRUE)  
 library(blandultim)  
 blandultim(data, x, y, ...)
