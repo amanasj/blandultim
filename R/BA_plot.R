@@ -68,6 +68,8 @@ BA_plot <- function(stats,
   lowerLOA_upperCI <- stats$summary$lowerLOA_upperCI
   lowerLOA_lowerCI <- stats$summary$lowerLOA_lowerCI
   CoR <- stats$summary$Coefficient_of_Repeatability
+  COR_lowerCI <- stats$summary$CoR_CI_lower
+  COR_upperCI <- stats$summary$CoR_CI_upper
   
   
   mean_max <- abs(stats$df$mean)
@@ -129,7 +131,7 @@ BA_plot <- function(stats,
                             label= paste0("LLoA = ", round(lloa, digits = digits), " (95% CI: ", round(lowerLOA_lowerCI, digits = digits), "," , round(lowerLOA_upperCI, digits = digits),")"), 
                             size=LoA_type_size, fontface = 2) 
   baplot <- baplot+annotate("text", x=xaxis_min+(CoRlabel_xshift*mean_max), y=diff_max+(CoRlabel_yshift*diff_max), 
-                            label= paste0("CoR = ", round(CoR, digits = digits),"dB"), 
+                            label= paste0("CoR = ", round(CoR, digits = digits),"dB", " (95% CI: ", round(COR_lowerCI, digits = digits), "," , round(COR_upperCI, digits = digits),")"), 
                             size=CoR_type_size, fontface = 2) 
   baplot <- baplot +
     geom_hline(yintercept = bias , linetype = 2) + # Bias
