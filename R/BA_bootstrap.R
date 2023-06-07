@@ -117,7 +117,7 @@ parabootstraptLOA <- function(nboot,data,x,y,seed=10,fixed,random){
   
   
   cat("\n \n WARNING:- Bootstrapping can take a long time depending on how super-duper your computer is
-                       and how many resamples (nboot) you have chosen (>20 minutes on my laptop with nboot=1000)... please be patient. \n . \n . \n . ")
+                        and how many resamples (nboot) you have chosen... please be patient. \n \n")
   
   
   set.seed(seed)
@@ -134,7 +134,9 @@ parabootstraptLOA <- function(nboot,data,x,y,seed=10,fixed,random){
   library(nlme)
   resa<-lme(diff~as.factor(fixed),random=~1|random,
             correlation=corCompSymm(form=~1|random),data=dataorig,na.action=na.omit)
+  
   summary(resa)
+  
   withinsd<-as.numeric(VarCorr(resa)[2,2])
   betweensd<-as.numeric(VarCorr(resa)[1,2])
   totalsd<-sqrt(as.numeric(VarCorr(resa)[1,1])+as.numeric(VarCorr(resa)[2,1]))
@@ -201,16 +203,16 @@ parabootstraptLOA <- function(nboot,data,x,y,seed=10,fixed,random){
   steeb1<-sort(teeb1)
   #lowb1<-lowa-steeb1[0.975*(nboot+1)]*var3
   #highb1<-lowa-steeb1[0.025*(nboot+1)]*var3
-  lowb1<-lowa - abs(steeb1[0.025*(nboot+1)]*var3)
-  highb1<-lowa + abs(steeb1[0.975*(nboot+1)]*var3)
+  lowb1 <- lowa - abs(steeb1[0.025*(nboot+1)]*var3)
+  highb1 <- lowa + abs(steeb1[0.975*(nboot+1)]*var3)
 
   ### Upper bootstrap limits
   teeb2<-(b2-uppera)/var3star
   steeb2<-sort(teeb2)
   #lowb2<-uppera-steeb2[0.975*(nboot+1)]*var3
   #highb2<-uppera-steeb2[0.025*(nboot+1)]*var3
-  lowb2<-uppera - abs(steeb2[0.025*(nboot+1)]*var3)
-  highb2<-uppera + abs(steeb2[0.975*(nboot+1)]*var3)
+  lowb2 <- uppera - abs(steeb2[0.025*(nboot+1)]*var3)
+  highb2 <- uppera + abs(steeb2[0.975*(nboot+1)]*var3)
   
   ### Within patient sd
   var4<-2*(withinvar^2)/(sumM-n)
@@ -221,27 +223,31 @@ parabootstraptLOA <- function(nboot,data,x,y,seed=10,fixed,random){
   steeb3<-sort(teeb3)
   #lowb3<-withinsd - (steeb3[0.975*(nboot+1)]*var5)
   #highb3<-withinsd -(steeb3[0.025*(nboot+1)]*var5)
-  lowb3<-withinsd - abs(steeb3[0.025*(nboot+1)]*var5)
-  highb3<-withinsd + abs(steeb3[0.975*(nboot+1)]*var5)          ##### changed from original  (see above two lines)
+  lowb3 <- withinsd - abs(steeb3[0.025*(nboot+1)]*var5)
+  highb3 <- withinsd + abs(steeb3[0.975*(nboot+1)]*var5)          ##### changed from original  (see above two lines)
   
   ### Total sd
   teeb5<-(b5-totalsd)/var2star
   steeb5<-sort(teeb5)
   #lowb5<-totalsd-steeb5[0.975*(nboot+1)]*var2
   #highb5<-totalsd-steeb5[0.025*(nboot+1)]*var2
-  lowb5<-totalsd - abs(steeb5[0.025*(nboot+1)]*var2)
-  highb5<-totalsd + abs(steeb5[0.975*(nboot+1)]*var2)
+  lowb5 <- totalsd - abs(steeb5[0.025*(nboot+1)]*var2)
+  highb5 <- totalsd + abs(steeb5[0.975*(nboot+1)]*var2)
   
   ### Mean
   teeb6<-(b6-meana)/b7
   steeb6<-sort(teeb6)
   #lowb6<-meana-steeb6[0.025*(nboot+1)]*sea
   #highb6<-meana-steeb6[0.975*(nboot+1)]*sea
-  lowb6<-meana - abs(steeb6[0.025*(nboot+1)]*sea)                 ##### changed from meana- to meana-abs()
-  highb6<-meana + abs(steeb6[0.975*(nboot+1)]*sea)               ##### changed from meana- to meana+abs()    (see above two lines)
+  lowb6 <- meana - abs(steeb6[0.025*(nboot+1)]*sea)                 ##### changed from meana- to meana-abs()
+  highb6 <- meana + abs(steeb6[0.975*(nboot+1)]*sea)               ##### changed from meana- to meana+abs()    (see above two lines)
   
   ### CoR
   CoR <- sqrt(2) * 1.96 * withinsd
+  ### CoR CI's
+  CoR_lower <- sqrt(2) * 1.96 * lowb3
+  CoR_upper <- sqrt(2) * 1.96 * highb3
+  
 
 #  plot(mean,diff,ylab="Difference",xlab="mean",ylim=c(-30,30),xlim=c(0,30),xaxp=c(0,30,8),las=1)
 #  abline(h=0)
@@ -262,11 +268,15 @@ parabootstraptLOA <- function(nboot,data,x,y,seed=10,fixed,random){
 #  abline(h=lowb6,lty=3)
 #  abline(h=highb6,lty=3)
   
-  cat("95% bootstrap confidence interval 
-for the lower limit is",lowb1, "to", highb1,"\n")
   
   cat("95% bootstrap confidence interval 
-for the upper limit is",lowb2, "to", highb2,"\n")
+for the CoR is",CoR_lower, "to", CoR_upper,"\n")
+  
+  cat("95% bootstrap confidence interval 
+for the lower limit of agreement is",lowb1, "to", highb1,"\n")
+  
+  cat("95% bootstrap confidence interval 
+for the upper limit of agreement is",lowb2, "to", highb2,"\n")
   
   cat("Within SD is",withinsd,"\n")
   
@@ -292,7 +302,8 @@ for the mean is",lowb6, "to", highb6,"\n")
                             "upper_LoA" = uppera, "upperLOA_lowerCI" = lowb2, "upperLOA_upperCI" = highb2, 
                             "withinsd" = withinsd, "LCI_withinSD" = lowb3, "UCI_withinSD" = highb3, 
                             "totalsd" = totalsd, "LCI_totalSD" = lowb5, "UCI_totalSD" = highb5, 
-                            "Coefficient_of_Repeatability" = CoR)
+                            "Coefficient_of_Repeatability" = CoR, "CoR_CI_lower"= CoR_lower, 
+                            "CoR_CI_upper"= CoR_upper)
 
   }, error=function(e){cat("\n ERROR: --", conditionMessage(e), "\n \n ERROR : COULD NOT COMPUTE ALL THE 95% CI's - TRY A LARGER NBOOT NUMBER")})
   
