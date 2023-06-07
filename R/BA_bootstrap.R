@@ -116,10 +116,11 @@ bootfn <- function(data1,nboot,origres){
 parabootstraptLOA <- function(nboot,data,x,y,seed=10,fixed,random){
   
   
-  cat("\n \n ------------------------------------------------------------------------------------------ 
+  cat("\n \n -------------------------------------------------------------------------------------------- 
              WARNING:- Bootstrapping can take a long time depending on how super-duper your computer is
-                        and how many resamples (nboot) you have chosen... please be patient. \n \n")
-             ------------------------------------------------------------------------------------------
+                        (15-20mins on my dell xps13 i7 10th gen)
+                        and also how many resamples (nboot) you have chosen... please be patient! \n \n")
+             --------------------------------------------------------------------------------------------
   
   set.seed(seed)
   
