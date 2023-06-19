@@ -6,16 +6,20 @@
 
   
 
-blandultim <- function(data, x, y, nboot=NULL, fixed=NULL, random=NULL, bootstrap=NULL, repeated=NULL){
+blandultim <- function(data, x, y, 
+                       nboot=NULL, 
+                       fixed=NULL, 
+                       random=NULL, 
+                       bootstrap=NULL, 
+                       repeated=NULL){
 
       
   
   if(bootstrap==TRUE){ 
     
       
-      cat("\n \n WARNING:- I have only written the bootstrapping code to deal with repeated measures so if 
-          'bootstrap=TRUE' then 'repeated=TRUE' is always set by default and random and fixed variables 
-           MUST ALWAYS be specified when bootstrapping. \n . \n . \n .")
+      cat("\n \n WARNING:- I have only written the bootstrapping code to deal with repeated measures so 'repeated=TRUE' 
+          is always ON by default and random and fixed variables MUST ALWAYS be specified when bootstrapping \n \n")
     
   
     
@@ -43,8 +47,6 @@ blandultim <- function(data, x, y, nboot=NULL, fixed=NULL, random=NULL, bootstra
   
   stats
   
-    
-    
   }
 
 }
