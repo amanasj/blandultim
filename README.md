@@ -16,7 +16,7 @@ computes Bland-Altman statistics and produces B-A plots based on several possibl
 <br>
 
 2) blandultim(data, x, y, bootstrap=F, repeated=T, fixed, random) - 
-   Normally distributed data with repeated measures (i.e. multipke dependent points per patient on the 
+   Normally distributed data with repeated measures (i.e. multiple dependent points per patient on the 
    B-A plot such as in pointwise test 1 vs pointwise test2. Here must specify fixed and random effects 
    for the mixed linear modelling (e.g. random=patient_ID, fixed=stimulus_ID)
 
