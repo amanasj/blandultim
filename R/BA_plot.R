@@ -29,7 +29,8 @@ BA_plot <- function(stats,
                     xaxis_min=-0.1,
                     xaxis_max=NULL,
                     yaxis_min=NULL,
-                    yaxis_max=NULL)
+                    yaxis_max=NULL,
+                    alpha=1)
 
 
 {
