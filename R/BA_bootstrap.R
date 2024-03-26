@@ -305,7 +305,7 @@ for the mean is",lowb6, "to", highb6,"\n")
                             "withinsd" = withinsd, "LCI_withinSD" = lowb3, "UCI_withinSD" = highb3,
                             "totalsd" = totalsd, "LCI_totalSD" = lowb5, "UCI_totalSD" = highb5,
                             "Coefficient_of_Repeatability" = CoR, "CoR_CI_lower"= CoR_lower,
-                            "CoR_CI_upper"= CoR_upper))
+                            "CoR_CI_upper"= CoR_upper)
 
   }, error=function(e){cat("\n ERROR: --", conditionMessage(e), "\n \n ERROR : COULD NOT COMPUTE ALL THE 95% CI's - TRY A LARGER NBOOT NUMBER")})
 
