@@ -1,32 +1,30 @@
 BA_plot <- function(stats,
                     x,
                     y,
-                    x_label = "Average of test 2 & test 3",
-                    y_label = "Difference (test 2 - test 3)",
+                    x_label = "Average of test 1 & test 2",
+                    y_label = "Difference (test 1 - test 2)",
                     title=NULL,
                     pointcolour="black",
                     axis_xshift=0.1,
-                    axis_yshift=0.1,
-                    biaslabel_yshift=0.05,
-                    biaslabel_xshift=-0.05,
-                    CIlabel_yshift=0.1,
-                    CIlabel_xshift=-0.1,
-                    CoRlabel_yshift=0.9,
-                    CoRlabel_xshift=-0.1,
+                    axis_yshift=2,
+                    biaslabel_yshift=0.08,
+                    biaslabel_xshift=0.8,
+                    CIlabel_yshift=0.15,
+                    CIlabel_xshift=0.8,
+                    CoRlabel_yshift=1.3,
+                    CoRlabel_xshift=0.9,
+                    CoR_units="",
                     digits=1,
                     pointsize=3.5,
                     axis_text_size=18,
-                    axis_title_size=24,
-                    plot_title_size=26,
-                    alpha=0.3,
-                    bias_type_size = 5,
-                    LoA_type_size = 6,
-                    CoR_type_size = 6,
-                    legend_size=0.8,
                     legend_title_size=14,
                     legend_text_size=10,
                     show_patient_ID_cols=TRUE,
-                    xmin=-0.1)
+                    xaxis_min=-0.1,
+                    xaxis_max=NULL,
+                    yaxis_min=NULL,
+                    yaxis_max=NULL)
+
 
 {
 
@@ -43,9 +41,9 @@ BA_plot <- function(stats,
     panel.grid.minor = element_blank(),
     legend.key.size = unit(legend_size, 'cm'),
     legend.title = element_text(size=legend_title_size),
-    legend.text = element_text(size=legend_text_size)
-    #panel.border = element_blank()
-    #axis.line = element_line()
+    legend.text = element_text(size=legend_text_size),
+    panel.border = element_blank(),
+    axis.line = element_line()
   )
 
 
@@ -55,23 +53,33 @@ BA_plot <- function(stats,
 
   ###################### extract stats for plots ###########################
   data <- stats$df
-  bias <- round(stats$summary$bias, digits = digits)
-  biasLowerCI <- round(stats$summary$bias_lowerCI, digits = digits)
-  biasUpperCI <- round(stats$summary$bias_upperCI, digits = digits)
-  lloa <- round(stats$summary$lower_LoA, digits = digits)
-  uloa <- round(stats$summary$upper_LoA, digits = digits)
-  upperLOA_upperCI <- round(stats$summary$upperLOA_upperCI, digits = digits)
-  upperLOA_lowerCI <- round(stats$summary$upperLOA_lowerCI, digits = digits)
-  lowerLOA_upperCI <- round(stats$summary$lowerLOA_upperCI, digits = digits)
-  lowerLOA_lowerCI <- round(stats$summary$lowerLOA_lowerCI, digits = digits)
-  CoR <- round(stats$summary$Coefficient_of_Repeatability, digits = digits)
-  xmax <- max(abs(x))
-  ymax <- max(y)
-  ymin <- min(y)
-  y_abs <- max(abs(y))
+  bias <- stats$summary$bias
+  biasLowerCI <- stats$summary$bias_lowerCI
+  biasUpperCI <- stats$summary$bias_upperCI
+  lloa <- stats$summary$lower_LoA
+  uloa <- stats$summary$upper_LoA
+  upperLOA_upperCI <- stats$summary$upperLOA_upperCI
+  upperLOA_lowerCI <- stats$summary$upperLOA_lowerCI
+  lowerLOA_upperCI <- stats$summary$lowerLOA_upperCI
+  lowerLOA_lowerCI <- stats$summary$lowerLOA_lowerCI
+  CoR <- stats$summary$Coefficient_of_Repeatability
+  #COR_lowerCI <- stats$summary$CoR_CI_lower
+  #COR_upperCI <- stats$summary$CoR_CI_upper
 
 
+  mean_max <- abs(stats$df$mean)
+  mean_max <- max(mean_max)
+  diff_max <- max(c(upperLOA_upperCI, lowerLOA_lowerCI))
 
+  if(is.null(xaxis_max)==T){
+    xaxis_max <- mean_max + (axis_xshift*mean_max)
+  }else{xaxis_max=xaxis_max}
+  if(is.null(yaxis_min)==T){
+    yaxis_min <- -diff_max - (axis_yshift*diff_max)
+  }else{yaxis_min=yaxis_min}
+  if(is.null(yaxis_max)==T){
+    yaxis_max <- diff_max + (axis_yshift*diff_max)
+  }else{yaxis_max=yaxis_max}
 
 
 
@@ -107,19 +115,18 @@ BA_plot <- function(stats,
 
   ####change axis limits
   baplot <- baplot +
-    ggplot2::coord_cartesian(xlim=c(xmin, xmax + (axis_xshift*xmax)), ylim=c(-y_abs - (axis_yshift*y_abs), y_abs + (axis_yshift*y_abs)), expand = F)
-
-  baplot <- baplot+annotate("text", x=xmax+(biaslabel_xshift*xmax), y=biasUpperCI+(biaslabel_yshift*y_abs),
-                            label= paste0("bias = ", bias, " (95% CI: ", biasLowerCI, "," , biasUpperCI,")"),
+    ggplot2::coord_cartesian(xlim=c(xaxis_min, xaxis_max), ylim=c(yaxis_min, yaxis_max), expand = F)
+  baplot <- baplot+annotate("text", x=xaxis_min+(biaslabel_xshift*mean_max), y=bias+(biaslabel_yshift*diff_max),
+                            label= paste0("bias = ", round(bias, digits = digits), " (95% CI: ", round(biasLowerCI, digits = digits), "," , round(biasUpperCI, digits = digits),")"),
                             size=bias_type_size, fontface = 2)
-  baplot <- baplot+annotate("text", x=xmax+(CIlabel_xshift*xmax), y=upperLOA_upperCI+(CIlabel_yshift*y_abs),
-                            label= paste0("ULoA = ", uloa, " (95% CI: ", upperLOA_lowerCI, "," , upperLOA_upperCI,")"),
+  baplot <- baplot+annotate("text", x=xaxis_min+(CIlabel_xshift*mean_max), y=upperLOA_upperCI+(CIlabel_yshift*diff_max),
+                            label= paste0("ULoA = ", round(uloa, digits = digits), " (95% CI: ", round(upperLOA_lowerCI, digits = digits), "," , round(upperLOA_upperCI, digits = digits),")"),
                             size=LoA_type_size, fontface = 2)
-  baplot <- baplot+annotate("text", x=xmax+(CIlabel_xshift*xmax), y=lowerLOA_lowerCI-(CIlabel_yshift*y_abs),
-                            label= paste0("LLoA = ", lloa, " (95% CI: ", lowerLOA_lowerCI, "," , lowerLOA_upperCI,")"),
+  baplot <- baplot+annotate("text", x=xaxis_min+(CIlabel_xshift*mean_max), y=lowerLOA_lowerCI-(CIlabel_yshift*diff_max),
+                            label= paste0("LLoA = ", round(lloa, digits = digits), " (95% CI: ", round(lowerLOA_lowerCI, digits = digits), "," , round(lowerLOA_upperCI, digits = digits),")"),
                             size=LoA_type_size, fontface = 2)
-  baplot <- baplot+annotate("text", x=xmax+(CoRlabel_xshift*xmax), y=biasUpperCI+(CoRlabel_yshift*y_abs),
-                            label= paste0("CoR = ", CoR,"dB"),
+  baplot <- baplot+annotate("text", x=xaxis_min+(CoRlabel_xshift*mean_max), y=diff_max+(CoRlabel_yshift*diff_max),
+                            label= paste0("CoR = ", round(CoR, digits = digits), CoR_units, " (95% CI: ", round(COR_lowerCI, digits = digits), "," , round(COR_upperCI, digits = digits),")"),
                             size=CoR_type_size, fontface = 2)
   baplot <- baplot +
     geom_hline(yintercept = bias , linetype = 2) + # Bias
@@ -131,16 +138,12 @@ BA_plot <- function(stats,
     geom_hline(yintercept = upperLOA_lowerCI, linetype = 3 ) + # Upper limit of agreement - lower confidence interval
     geom_hline(yintercept = lowerLOA_upperCI, linetype = 3 ) + # Lower limit of agreement - upper confidence interval
     geom_hline(yintercept = lowerLOA_lowerCI, linetype = 3 ) + # Lower limit of agreement - lower confidence interval
-    annotate( "rect", xmin = -Inf , xmax = Inf , ymin = biasLowerCI , ymax = biasUpperCI , fill="darkgrey" , alpha=alpha ) + # Bias confidence interval shading
-    annotate( "rect", xmin = -Inf , xmax = Inf , ymin = upperLOA_lowerCI , ymax = upperLOA_upperCI , fill="darkgrey" , alpha=alpha ) + # Upper limits of agreement confidence interval shading
-    annotate( "rect", xmin = -Inf , xmax = Inf , ymin = lowerLOA_lowerCI , ymax = lowerLOA_upperCI , fill="darkgrey" , alpha=alpha ) # Lower limits of agreement confidence interval shading
+    annotate( "rect", xmin = -Inf , xmax = Inf , ymin = biasLowerCI , ymax = biasUpperCI, fill="darkgrey", alpha=alpha) + # Bias confidence interval shading
+    annotate( "rect", xmin = -Inf , xmax = Inf , ymin = upperLOA_lowerCI, ymax = upperLOA_upperCI, fill="darkgrey" , alpha=alpha) + # Upper limits of agreement confidence interval shading
+    annotate( "rect", xmin = -Inf , xmax = Inf , ymin = lowerLOA_lowerCI, ymax = lowerLOA_upperCI, fill="darkgrey" , alpha=alpha) # Lower limits of agreement confidence interval shading
 
   baplot
 
 
 
 }
-
-
-
-
