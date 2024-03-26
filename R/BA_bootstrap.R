@@ -113,7 +113,7 @@ bootfn <- function(data1,nboot,origres){
 # Bland-Altman plot with lines representing 95% LoA and 95% CI, 95% # bootstrap confidence intervals, within-patient SD with 95% CI, #between-patient SD with 95% CI, and other relevant statistics,
 ####################################################################
 
-parabootstraptLOA <- function(nboot,data,x,y,seed=10,fixed,random){
+parabootstraptLOA <- function(nboot,data,x,y, seed=770, fixed,random){
 
 
   cat("\n \n WARNING:- Bootstrapping can take a long time depending on how super-duper your computer is
