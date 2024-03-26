@@ -113,7 +113,7 @@ bootfn <- function(data1,nboot,origres){
 # Bland-Altman plot with lines representing 95% LoA and 95% CI, 95% # bootstrap confidence intervals, within-patient SD with 95% CI, #between-patient SD with 95% CI, and other relevant statistics,
 ####################################################################
 
-parabootstraptLOA <- function(nboot,data,x,y, seed=770, fixed,random){
+parabootstraptLOA <- function(nboot,data,x,y,seed=10,fixed,random){
 
 
   cat("\n \n WARNING:- Bootstrapping can take a long time depending on how super-duper your computer is
@@ -242,8 +242,14 @@ parabootstraptLOA <- function(nboot,data,x,y, seed=770, fixed,random){
   lowb6<-meana - abs(steeb6[0.025*(nboot+1)]*sea)                 ##### changed from meana- to meana-abs()
   highb6<-meana + abs(steeb6[0.975*(nboot+1)]*sea)               ##### changed from meana- to meana+abs()    (see above two lines)
 
+
   ### CoR
   CoR <- sqrt(2) * 1.96 * withinsd
+  ### CoR CI's
+  CoR_lower <- sqrt(2) * 1.96 * lowb3
+  CoR_upper <- sqrt(2) * 1.96 * highb3
+
+
 
 #  plot(mean,diff,ylab="Difference",xlab="mean",ylim=c(-30,30),xlim=c(0,30),xaxp=c(0,30,8),las=1)
 #  abline(h=0)
@@ -263,6 +269,10 @@ parabootstraptLOA <- function(nboot,data,x,y, seed=770, fixed,random){
 #  abline(h=highb2,lty=3)
 #  abline(h=lowb6,lty=3)
 #  abline(h=highb6,lty=3)
+
+
+  cat("95% bootstrap confidence interval
+for the CoR is", CoR_lower, "to", CoR_upper,"\n")
 
   cat("95% bootstrap confidence interval
 for the lower limit is",lowb1, "to", highb1,"\n")
@@ -294,7 +304,8 @@ for the mean is",lowb6, "to", highb6,"\n")
                             "upper_LoA" = uppera, "upperLOA_lowerCI" = lowb2, "upperLOA_upperCI" = highb2,
                             "withinsd" = withinsd, "LCI_withinSD" = lowb3, "UCI_withinSD" = highb3,
                             "totalsd" = totalsd, "LCI_totalSD" = lowb5, "UCI_totalSD" = highb5,
-                            "Coefficient_of_Repeatability" = CoR)
+                            "Coefficient_of_Repeatability" = CoR, "CoR_CI_lower"= CoR_lower,
+                            "CoR_CI_upper"= CoR_upper))
 
   }, error=function(e){cat("\n ERROR: --", conditionMessage(e), "\n \n ERROR : COULD NOT COMPUTE ALL THE 95% CI's - TRY A LARGER NBOOT NUMBER")})
 
@@ -310,4 +321,6 @@ for the mean is",lowb6, "to", highb6,"\n")
 
 
 
-              
+
+
+
