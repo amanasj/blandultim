@@ -30,7 +30,7 @@ BA_plot <- function(stats,
                     xaxis_max=NULL,
                     yaxis_min=NULL,
                     yaxis_max=NULL,
-                    alpha=0.2)
+                    alpha=0.3)
 
 
 {
