@@ -63,8 +63,8 @@ BA_plot <- function(stats,
   lowerLOA_upperCI <- stats$summary$lowerLOA_upperCI
   lowerLOA_lowerCI <- stats$summary$lowerLOA_lowerCI
   CoR <- stats$summary$Coefficient_of_Repeatability
-  #COR_lowerCI <- stats$summary$CoR_CI_lower
-  #COR_upperCI <- stats$summary$CoR_CI_upper
+  COR_lowerCI <- stats$summary$CoR_CI_lower
+  COR_upperCI <- stats$summary$CoR_CI_upper
 
 
   mean_max <- abs(stats$df$mean)
