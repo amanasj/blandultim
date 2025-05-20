@@ -44,6 +44,10 @@ computes Bland-Altman statistics and produces B-A plots based on several possibl
          
  4) Finally produce B-A plot using function:   BA_plot(data, x, y, title)
 
+<br>
+
+where x and y are test 1 and test 2 values
+
 
 <br><br>
 
