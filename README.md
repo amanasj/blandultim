@@ -31,7 +31,7 @@ computes Bland-Altman statistics and produces B-A plots based on several possibl
    <br>
    <br>
 
-where x and y are test 1 and test 2 values
+where x and y are test 1 and test 2 values (i.e. x = test values, y = retest values)
 
 <br>
    
