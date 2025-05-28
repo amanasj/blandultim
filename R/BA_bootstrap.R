@@ -20,26 +20,30 @@
 ####################################################################
 
 bootMixedfunction <- function(datainput){
-
+  
   library(nlme)
-  resb<-lme(bootdiffsim~as.factor(fixed),random=~1|random,
+  
+  fixed <- as.factor(fixed)
+  random <- as.factor(random)
+
+  resb<-lme(bootdiffsim~fixed,random=~1|random,
             correlation=corCompSymm(form=~1|random),data=datainput,na.action=na.omit)
   summary(resb)
   bootwithinsd<-as.numeric(VarCorr(resb)[2,2])
   bootbetweensd<-as.numeric(VarCorr(resb)[1,2])
   boottotalsd<-sqrt(as.numeric(VarCorr(resb)[1,1])+as.numeric(VarCorr(resb)[2,1]))
-
+  
   resb2<-lme(bootdiffsim~1,random=~1|random,
              correlation=corCompSymm(form=~1|random),data=datainput,na.action=na.omit)
   mean<-summary(resb2)$tTable[1,1]
   se<-summary(resb2)$tTable[1,2]
-
+  
   low<-mean-1.96*boottotalsd
   upper<-mean+1.96*boottotalsd
-
+  
   out<-cbind(low,upper,bootwithinsd,bootbetweensd,boottotalsd,mean,se)
   out
-
+  
 }
 ##################################################################
 #Function bootfn performs the parametric bootstrap method for the #95% CI and calls ‘bootMixedfunction’
@@ -53,16 +57,19 @@ bootMixedfunction <- function(datainput){
 ####################################################################
 
 bootfn <- function(data1,nboot,origres){
-
+  
+  fixed <- as.factor(fixed)
+  random <- as.numeric(random)
+  
   fits<-predict(origres,level=0)
-
+  
   newREpred<-rnorm(length(levels(as.factor(random))),
                    0,as.numeric(VarCorr(origres)[1,2]))
-
+  
   nperppt<-by(data1$diff,INDICES=random, FUN=function(x) sum(is.na(x)=="FALSE"))
-
+  
   newREdata<-rep(newREpred,times=as.numeric(nperppt))
-
+  
   bootlow<-NULL
   bootupper<-NULL
   bootwithinsd<-NULL
@@ -70,15 +77,15 @@ bootfn <- function(data1,nboot,origres){
   boottotalsd<-NULL
   bootmean<-NULL
   bootse<-NULL
-
+  
   for(j in 1:nboot){
-
+    
     bootdiffsim<-fits+newREdata+rnorm(length(fits),0,as.numeric(VarCorr(origres)[2,2]))
-
+    
     bootdata<-data.frame(data1,bootdiffsim)
-
+    
     bootMixedfunction(bootdata)
-
+    
     bootlow[j]<-bootMixedfunction(bootdata)[1]
     bootupper[j]<-bootMixedfunction(bootdata)[2]
     bootwithinsd[j]<-bootMixedfunction(bootdata)[3]
@@ -86,13 +93,13 @@ bootfn <- function(data1,nboot,origres){
     boottotalsd[j]<-bootMixedfunction(bootdata)[5]
     bootmean[j]<-bootMixedfunction(bootdata)[6]
     bootse[j]<-bootMixedfunction(bootdata)[7]
-
+    
   }
-
+  
   output<-cbind(bootlow,bootupper,bootwithinsd,bootbetweensd,boottotalsd,bootmean,bootse)
   names(output)<-c(bootlow,bootupper,bootwithinsd,bootbetweensd,boottotalsd,bootmean,bootse)
   output
-
+  
 }
 
 
@@ -114,50 +121,51 @@ bootfn <- function(data1,nboot,origres){
 ####################################################################
 
 parabootstraptLOA <- function(nboot,data,x,y,seed=10,fixed,random){
-
-
+  
+  
   cat("\n \n WARNING:- Bootstrapping can take a long time depending on how super-duper your computer is
                         and how many resamples (nboot) you have chosen... please be patient. \n \n")
-
-
+  
+  
   set.seed(seed)
-
+  
   # Calculate the paired differences
   diff <- y-x
   # Calculate the mean
   mean <-(y+x)/2
-
+  
   dataorig<-data.frame(data,diff,mean)
-
-
-
+  
+  fixed <- as.factor(fixed)
+  random <- as.factor(random)
+  
   library(nlme)
-  resa<-lme(diff~as.factor(fixed),random=~1|random,
+  resa<-lme(diff~fixed,random=~1|random,
             correlation=corCompSymm(form=~1|random),data=dataorig,na.action=na.omit)
-
+  
   summary(resa)
-
+  
   withinsd<-as.numeric(VarCorr(resa)[2,2])
   betweensd<-as.numeric(VarCorr(resa)[1,2])
   totalsd<-sqrt(as.numeric(VarCorr(resa)[1,1])+as.numeric(VarCorr(resa)[2,1]))
-
+  
   resa2<-lme(diff~1,random=~1|random,
              correlation=corCompSymm(form=~1|random),data=dataorig,na.action=na.omit)
   meana<-summary(resa2)$tTable[1,1]
   sea<-summary(resa2)$tTable[1,2]
-
+  
   lowa<-meana-1.96*totalsd
   uppera<-meana+1.96*totalsd
-
+  
   obsres<-c(lowa,uppera,withinsd,betweensd,totalsd,meana,sea)
-
+  
   withinvar<-withinsd^2
   betweenvar<-betweensd^2
   totalvar<-totalsd^2
   varm<-sea^2
-
+  
   store<-bootfn(dataorig,nboot,resa)
-
+  
   slist<-NULL
   slist<-as.numeric(by((is.na(dataorig$diff)==0),INDICES=random,FUN=sum))
   n<-length(slist[slist!=0])
@@ -167,7 +175,7 @@ parabootstraptLOA <- function(nboot,data,x,y,seed=10,fixed,random){
   sumMsquared<-sum(slist2)
   lambda<-((sumM^2)-sumMsquared)/((n-1)*sumM)
   lambda
-
+  
   # bootstrap replicates#
   # bootlower loa #
   b1<-store[,1]
@@ -189,15 +197,15 @@ parabootstraptLOA <- function(nboot,data,x,y,seed=10,fixed,random){
   b9<-b4^2
   # boot total var #
   b10<-b5^2
-
+  
   var1star<-(  2*(  ((1-1/lambda)*b8)^2  )/(sumM-n) )+ ( 2*((b8/lambda+b9)^2)/(n-1) )
   var2star<- 0.25*(var1star/b10)
   var3star<-(b7^2)+(1.96^2)*var2star
-
+  
   var1<-(  2*(  ((1-1/lambda)*withinvar)^2  )/(sumM-n) )+ ( 2*((withinvar/lambda+betweenvar)^2)/(n-1) )
   var2<- 0.25*(var1/totalvar)
   var3<-varm+(1.96^2)*var2
-
+  
   ### Lower bootstrap limits
   teeb1<-(b1-lowa)/var3star
   steeb1<-sort(teeb1)
@@ -205,7 +213,7 @@ parabootstraptLOA <- function(nboot,data,x,y,seed=10,fixed,random){
   #highb1<-lowa-steeb1[0.025*(nboot+1)]*var3
   lowb1<-lowa - abs(steeb1[0.025*(nboot+1)]*var3)
   highb1<-lowa + abs(steeb1[0.975*(nboot+1)]*var3)
-
+  
   ### Upper bootstrap limits
   teeb2<-(b2-uppera)/var3star
   steeb2<-sort(teeb2)
@@ -213,7 +221,7 @@ parabootstraptLOA <- function(nboot,data,x,y,seed=10,fixed,random){
   #highb2<-uppera-steeb2[0.025*(nboot+1)]*var3
   lowb2<-uppera - abs(steeb2[0.025*(nboot+1)]*var3)
   highb2<-uppera + abs(steeb2[0.975*(nboot+1)]*var3)
-
+  
   ### Within patient sd
   var4<-2*(withinvar^2)/(sumM-n)
   var5<-0.25*(var4/withinvar)
@@ -225,7 +233,7 @@ parabootstraptLOA <- function(nboot,data,x,y,seed=10,fixed,random){
   #highb3<-withinsd -(steeb3[0.025*(nboot+1)]*var5)
   lowb3<-withinsd - abs(steeb3[0.025*(nboot+1)]*var5)
   highb3<-withinsd + abs(steeb3[0.975*(nboot+1)]*var5)          ##### changed from original  (see above two lines)
-
+  
   ### Total sd
   teeb5<-(b5-totalsd)/var2star
   steeb5<-sort(teeb5)
@@ -233,7 +241,7 @@ parabootstraptLOA <- function(nboot,data,x,y,seed=10,fixed,random){
   #highb5<-totalsd-steeb5[0.025*(nboot+1)]*var2
   lowb5<-totalsd - abs(steeb5[0.025*(nboot+1)]*var2)
   highb5<-totalsd + abs(steeb5[0.975*(nboot+1)]*var2)
-
+  
   ### Mean
   teeb6<-(b6-meana)/b7
   steeb6<-sort(teeb6)
@@ -241,83 +249,82 @@ parabootstraptLOA <- function(nboot,data,x,y,seed=10,fixed,random){
   #highb6<-meana-steeb6[0.975*(nboot+1)]*sea
   lowb6<-meana - abs(steeb6[0.025*(nboot+1)]*sea)                 ##### changed from meana- to meana-abs()
   highb6<-meana + abs(steeb6[0.975*(nboot+1)]*sea)               ##### changed from meana- to meana+abs()    (see above two lines)
-
-
+  
+  
   ### CoR
   CoR <- sqrt(2) * 1.96 * withinsd
   ### CoR CI's
   CoR_lower <- sqrt(2) * 1.96 * lowb3
   CoR_upper <- sqrt(2) * 1.96 * highb3
-
-
-
-#  plot(mean,diff,ylab="Difference",xlab="mean",ylim=c(-30,30),xlim=c(0,30),xaxp=c(0,30,8),las=1)
-#  abline(h=0)
-#  abline(h=meana,lty=2,lwd=1.5)
-#  abline(h=lowa,lty=2,lwd=1.5)
-#  abline(h=uppera,lty=2,lwd=1.5)
-
+  
+  
+  
+  #  plot(mean,diff,ylab="Difference",xlab="mean",ylim=c(-30,30),xlim=c(0,30),xaxp=c(0,30,8),las=1)
+  #  abline(h=0)
+  #  abline(h=meana,lty=2,lwd=1.5)
+  #  abline(h=lowa,lty=2,lwd=1.5)
+  #  abline(h=uppera,lty=2,lwd=1.5)
+  
   cat("LoA are", lowa, "to" ,uppera,"\n")
   cat("Maximum negative difference is",abs(min(dataorig$diff,na.rm=T)),"\n")
   cat("Maximum positive difference is",max(dataorig$diff,na.rm=T),"\n")
   cat("Mean bias is",meana, "\n")
   cat("Coefficient of Repeatability is ±",CoR,"\n")
-
-#  abline(h=lowb1,lty=3)
-#  abline(h=lowb2,lty=3)
-#  abline(h=highb1,lty=3)
-#  abline(h=highb2,lty=3)
-#  abline(h=lowb6,lty=3)
-#  abline(h=highb6,lty=3)
-
-
+  
+  #  abline(h=lowb1,lty=3)
+  #  abline(h=lowb2,lty=3)
+  #  abline(h=highb1,lty=3)
+  #  abline(h=highb2,lty=3)
+  #  abline(h=lowb6,lty=3)
+  #  abline(h=highb6,lty=3)
+  
+  
   cat("95% bootstrap confidence interval
 for the CoR is", CoR_lower, "to", CoR_upper,"\n")
-
+  
   cat("95% bootstrap confidence interval
 for the lower limit is",lowb1, "to", highb1,"\n")
-
+  
   cat("95% bootstrap confidence interval
 for the upper limit is",lowb2, "to", highb2,"\n")
-
+  
   cat("Within SD is",withinsd,"\n")
-
+  
   cat("95% bootstrap confidence interval
 for the within SD is",lowb3, "to", highb3,"\n")
-
+  
   cat("Total SD is",totalsd,"\n")
-
+  
   cat("95% BC bootstrap confidence interval
 for the total SD is",lowb5, "to", highb5,"\n")
-
+  
   cat("95% BC bootstrap confidence interval
 for the mean is",lowb6, "to", highb6,"\n")
-
+  
   summary <- data.frame()
-
-
-
+  
+  
+  
   tryCatch({
-
+    
     summary <- cbind.data.frame("bias" = meana, "bias_lowerCI" = lowb6, "bias_upperCI" = highb6,
-                            "lower_LoA" = lowa, "lowerLOA_lowerCI" = lowb1, "lowerLOA_upperCI" = highb1,
-                            "upper_LoA" = uppera, "upperLOA_lowerCI" = lowb2, "upperLOA_upperCI" = highb2,
-                            "withinsd" = withinsd, "LCI_withinSD" = lowb3, "UCI_withinSD" = highb3,
-                            "totalsd" = totalsd, "LCI_totalSD" = lowb5, "UCI_totalSD" = highb5,
-                            "Coefficient_of_Repeatability" = CoR, "CoR_CI_lower"= CoR_lower,
-                            "CoR_CI_upper"= CoR_upper)
-
+                                "lower_LoA" = lowa, "lowerLOA_lowerCI" = lowb1, "lowerLOA_upperCI" = highb1,
+                                "upper_LoA" = uppera, "upperLOA_lowerCI" = lowb2, "upperLOA_upperCI" = highb2,
+                                "withinsd" = withinsd, "LCI_withinSD" = lowb3, "UCI_withinSD" = highb3,
+                                "totalsd" = totalsd, "LCI_totalSD" = lowb5, "UCI_totalSD" = highb5,
+                                "Coefficient_of_Repeatability" = CoR, "CoR_CI_lower"= CoR_lower,
+                                "CoR_CI_upper"= CoR_upper)
+    
   }, error=function(e){cat("\n ERROR: --", conditionMessage(e), "\n \n ERROR : COULD NOT COMPUTE ALL THE 95% CI's - TRY A LARGER NBOOT NUMBER")})
-
-
+  
+  
   return(list(df = dataorig, summary = summary))
-
+  
 }
 
 
 ####################################################################
 ####################################################################
-
 
 
 
