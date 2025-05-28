@@ -167,7 +167,7 @@ parabootstraptLOA <- function(nboot,data,x,y,seed=10,fixed,random){
   store<-bootfn(dataorig,nboot,resa)
   
   slist<-NULL
-  slist<-as.numeric(by((is.na(dataorig$diff)==0),INDICES=random,FUN=sum))
+  slist<-as.numeric(by((is.na(dataorig$diff)==0),INDICES=as.numeric(random),FUN=sum))
   n<-length(slist[slist!=0])
   sumM<-sum(slist)
   slist2<-NULL
